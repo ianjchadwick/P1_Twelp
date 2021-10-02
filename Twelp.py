@@ -11,6 +11,13 @@ from dotenv import load_dotenv
 #For dealing with json responses we receive from the API
 import json
 
+#For access to google cloud NLP
+from google.cloud import language_v1
+
+
+#For accessing text field of tweet json output
+import extract_tweet_text
+
 #load the bearer_token from the dotenv file
 load_dotenv()
 def auth():
@@ -45,6 +52,49 @@ def connect_to_endpoint(url, headers, params, next_token = None):
         raise Exception(response.status_code, response.text)
     return response.json()
 
+#from Google's tutorial
+def sample_analyze_sentiment(text_content):
+    """
+    Analyzing Sentiment in a String
+
+    Args:
+      text_content The text content to analyze
+    """
+
+    client = language_v1.LanguageServiceClient.from_service_account_json('services.json')
+
+    # Available types: PLAIN_TEXT, HTML
+    type_ = language_v1.Document.Type.PLAIN_TEXT
+
+    # Optional. If not specified, the language is automatically detected.
+    # For list of supported languages:
+    # https://cloud.google.com/natural-language/docs/languages
+    language = "en"
+    document = {"content": text_content, "type_": type_, "language": language}
+
+    # Available values: NONE, UTF8, UTF16, UTF32
+    encoding_type = language_v1.EncodingType.UTF8
+
+    response = client.analyze_sentiment(request = {'document': document, 'encoding_type': encoding_type})
+
+    # Get sentiment for all sentences in the document
+    for sentence in response.sentences:
+        print(u"Sentence text: {}".format(sentence.text.content))
+        print(u"Sentence sentiment score: {}".format(sentence.sentiment.score))
+        print(u"Sentence sentiment magnitude: {}".format(sentence.sentiment.magnitude))
+
+    # Get the language of the text, which will be the same as
+    # the language specified in the request or, if not specified,
+    # the automatically-detected language.
+    print(u"Language of the text: {}".format(response.language))
+    # Get overall sentiment of the input document
+    print(u"Restaurant sentiment score: {}".format(response.document_sentiment.score))
+    print(
+        u"Document sentiment magnitude: {}".format(
+            response.document_sentiment.magnitude
+        )
+    )
+
 #Inputs for the request
 bearer_token = auth()
 headers = create_headers(bearer_token)
@@ -58,5 +108,9 @@ json_response = connect_to_endpoint(url[0], headers, url[1])
 
 with open('data.json', 'w') as f:
     json.dump(json_response, f)
+
+text = extract_tweet_text.extract_tweet_text('data.json')
+
+sample_analyze_sentiment(text)
 
 
