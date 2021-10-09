@@ -8,3 +8,9 @@ The application will ask the user for a name of a restaurant and then it will us
 I as a potential patron of a restaurant want to know if this particular restaurant has been talked about on twitter and if so, whether people have been saying good or bad things about it.
 
 I as a potential patron of a restaurant want to know whether people were talking about the food, the service or something else about the restaurant.
+
+##  How-To:
+
+Requires Twitter Bearer-Token be in a .env file in the environment saved as "BEARER_TOKEN" and google NLP service.json saved in the same directory with the API access keys in it to access the appropriate APIs.
+
+Then simply run Twelp.py, enter in the name of a restaurant and the results will appear in the console as well as be exported to data.json in the directory. 
