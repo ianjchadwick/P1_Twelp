@@ -14,7 +14,6 @@ import json
 #For access to google cloud NLP
 from google.cloud import language_v1
 
-
 #For accessing text field of tweet json output
 import extract_tweet_text
 
@@ -89,28 +88,25 @@ def sample_analyze_sentiment(text_content):
     print(u"Language of the text: {}".format(response.language))
     # Get overall sentiment of the input document
     print(u"Restaurant sentiment score: {}".format(response.document_sentiment.score))
-    print(
-        u"Document sentiment magnitude: {}".format(
-            response.document_sentiment.magnitude
-        )
-    )
+    print(u"Document sentiment magnitude: {}".format(response.document_sentiment.magnitude))
 
+if __name__ == '__main__':
 #Inputs for the request
-bearer_token = auth()
-headers = create_headers(bearer_token)
-keyword = input("Enter a name of a restaurant: ")
-query = keyword +" lang:en -is:retweet"
-max_results = 100
+    bearer_token = auth()
+    headers = create_headers(bearer_token)
+    keyword = input("Enter a name of a restaurant: ")
+    query = keyword +" lang:en -is:retweet"
+    max_results = 100
 
-url = create_url(query, max_results)
+    url = create_url(query, max_results)
 
-json_response = connect_to_endpoint(url[0], headers, url[1])
+    json_response = connect_to_endpoint(url[0], headers, url[1])
 
-with open('data.json', 'w') as f:
-    json.dump(json_response, f)
+    with open('data.json', 'w') as f:
+        json.dump(json_response, f)
 
-text = extract_tweet_text.extract_tweet_text('data.json')
+    text = extract_tweet_text.extract_tweet_text('data.json')
 
-sample_analyze_sentiment(text)
+    sample_analyze_sentiment(text)
 
 
