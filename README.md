@@ -11,6 +11,18 @@ I as a potential patron of a restaurant want to know whether people were talking
 
 ##  How-To:
 
-Requires Twitter Bearer-Token be in a .env file in the environment saved as "BEARER_TOKEN" and google NLP service.json saved in the same directory with the API access keys in it to access the appropriate APIs.
+Requires Twitter Bearer-Token be in a .env file in the environment saved as "BEARER_TOKEN" and google NLP service.json saved in the same directory with the API access keys in it to access the appropriate APIs. See https://cloud.google.com/docs/authentication/production#windows for information on how to create a services.json file.
 
 Then simply run Twelp.py, enter in the name of a restaurant and the results will appear in the console as well as be exported to data.json in the directory. 
+
+## Unit Tests:
+
+The way I originally wrote this program was not really that "unit test friendly", since for every run, the results will be different. So, I have written unit tests for each of the functions that are called. The google NLP function was modified to return the document's sentiment score so that it could be compared to the sentiment of a fixed string with a known sentiment value to ensure that it was working as intended.
+
+Functions tested
+* auth
+* create_headers
+* create_url
+* connect_to_endpoint
+* extract_text
+* sample_analyze_sentiment
