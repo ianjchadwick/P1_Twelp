@@ -99,9 +99,9 @@ if __name__ == '__main__':
     # Inputs for the request
     bearer_token = auth()
     headers = create_headers(bearer_token)
-    getInput = True
 
     # Error Checking to ensure that the user enters a valid string for the API request
+    getInput = True
     while getInput:
         # Get name of restaurant via CLI from user
         keyword = input("Enter a name of a restaurant: ")
@@ -113,7 +113,7 @@ if __name__ == '__main__':
         try:
             json_response = connect_to_endpoint(url[0], headers, url[1])
         except:
-            print("Oops! There is something wrong with your entry. Please try again!")
+            print("Oops! There is something wrong with your entry. Please  make sure your entry does not use any special characters and try again!")
         else:
             getInput = False
 
