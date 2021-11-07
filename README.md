@@ -10,12 +10,14 @@ I as a potential patron of a restaurant want to know if this particular restaura
 I as a potential patron of a restaurant want to know whether people were talking about the food, the service or something else about the restaurant.
 
 ##  How-To:
+### Twelp.py
 
 Requires Twitter Bearer-Token be in a .env file in the environment saved as "BEARER_TOKEN" and google NLP service.json saved in the same directory with the API access keys in it to access the appropriate APIs. See https://cloud.google.com/docs/authentication/production#windows for information on how to create a services.json file.
 
 Then simply run Twelp.py, enter in the name of a restaurant and the results will appear in the console as well as be exported to data.json in the directory. 
 
 ## Unit Tests:
+### unit_tests.py
 
 The way I originally wrote this program was not really that "unit test friendly", since for every run, the results will be different. So, I have written unit tests for each of the functions that are called. The google NLP function was modified to return the document's sentiment score so that it could be compared to the sentiment of a fixed string with a known sentiment value to ensure that it was working as intended.
 
