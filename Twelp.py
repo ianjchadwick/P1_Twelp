@@ -99,15 +99,24 @@ if __name__ == '__main__':
     # Inputs for the request
     bearer_token = auth()
     headers = create_headers(bearer_token)
+    getInput = True
 
-    # Get name of restaurant via CLI from user
-    keyword = input("Enter a name of a restaurant: ")
-    query = keyword +" lang:en -is:retweet"
-    max_results = 100
-    url = create_url(query, max_results)
+    # Error Checking to ensure that the user enters a valid string for the API request
+    while getInput:
+        # Get name of restaurant via CLI from user
+        keyword = input("Enter a name of a restaurant: ")
+        query = keyword +" lang:en -is:retweet"
+        max_results = 100
+        url = create_url(query, max_results)
 
-    # Make request to Twitter API with inputs
-    json_response = connect_to_endpoint(url[0], headers, url[1])
+        # Make request to Twitter API with inputs
+        try:
+            json_response = connect_to_endpoint(url[0], headers, url[1])
+        except:
+            print("Oops! There is something wrong with your entry. Please try again!")
+        else:
+            getInput = False
+
 
     with open('data.json', 'w') as f:
         json.dump(json_response, f)
@@ -117,5 +126,4 @@ if __name__ == '__main__':
 
     # Pass the string into the NLP API to get an overall sentiment score from the Twitter results
     analyze_sentiment(text)
-
 
